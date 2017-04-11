@@ -1,0 +1,13 @@
+/*.log
+/target
+/*-init.clj
+.DS_Store
+resources/public/js/compiled/
+test_rest
+test.data
+.lein-failures
+.lein-repl-history
+.nrepl-port
+node_modules/
+out/
+resources/public/js/compiled/
