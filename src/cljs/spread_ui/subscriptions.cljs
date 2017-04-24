@@ -1,4 +1,4 @@
-(ns finch-ui.subscriptions
+(ns spread-ui.subscriptions
   (:require [re-frame.core :as re-frame]))
 
 ;; (re-frame/reg-sub

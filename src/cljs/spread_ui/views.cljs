@@ -7,7 +7,7 @@
   (let []
     (fn []
       [:div {:class "container"}
-       [:div {:class "header"} "Spread" ]
+       [:div {:class "header"} "Spread"]
        [:div {:class "innerContainer"}
         [:div {:class "rowDisplay margin-top"} [:p "SPREAD"]]
 
