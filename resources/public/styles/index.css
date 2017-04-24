@@ -45,7 +45,7 @@ html, body {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: 10px;
+    margin: 5px;
 }
 
 .footer {
@@ -78,7 +78,17 @@ html, body {
     margin-bottom: 50px;
 }
 
-.mainselection select {
+.chooser {    
+    overflow:hidden;
+    width:400px;
+    background: #39CCCC url("down.svg") no-repeat scroll 380px center;
+    box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.24);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.chooser select {
     width: 400px;  
     color: #EEE;
     font-size: 20px;
@@ -89,17 +99,18 @@ html, body {
     -webkit-appearance: none;
 }
 
-.mainselection {    
-    overflow:hidden;
-    width:400px;
-    background: #39CCCC url("down.svg") no-repeat scroll 380px center;
-    box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.24);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+.chooser:hover {
+    background-color: #2aa2a2; 
 }
 
-.mainselection:hover {
-    background-color: #2aa2a2;
-    /* border:1px solid red */
+.label {
+    font-size: 20px;
+    font-weight: bold;
+    color: #DDDDDD;
+}
+
+.hline {
+    width: 900px;
+    height: 0px;
+    color: #DDDDDD;
 }
