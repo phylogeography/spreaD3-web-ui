@@ -8,7 +8,8 @@
             [clojure.java.io :as cjio]
             [clojure.string :as str]
             [clojure.java.classpath :as cjc]
-            [criterium.core :as crit]))
+            [criterium.core :as crit]
+            [figwheel-sidecar.repl-api :refer [start-figwheel! cljs-repl]]))
 
 (defonce the-system
   ;; "A container for the current instance of the application.
@@ -57,3 +58,8 @@
   (set-refresh-dirs "src/clj" "dev")
   (stop)
   (refresh :after 'user/run))
+
+(defn start-figwheel []
+  (do
+    (start-figwheel!)
+    (cljs-repl)))

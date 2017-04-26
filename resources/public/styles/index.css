@@ -88,6 +88,10 @@ html, body {
     border-radius: 5px;
 }
 
+.chooser:hover {
+    background-color: #2aa2a2; 
+}
+
 .chooser select {
     width: 400px;  
     color: #EEE;
@@ -97,10 +101,6 @@ html, body {
     border: 0;
     background: transparent;
     -webkit-appearance: none;
-}
-
-.chooser:hover {
-    background-color: #2aa2a2; 
 }
 
 .label {
@@ -113,4 +113,30 @@ html, body {
     width: 900px;
     height: 0px;
     color: #DDDDDD;
+}
+
+.btn-upload {
+    color: #FFFFFF;
+    background:url('tree.png') no-repeat left center;
+    font-size: 18px;
+    font-weight: 300;
+    width: 170px;
+    height: 40px;
+    border-radius: 5px;
+    background-color: #7FDBFF;
+    border: none;
+    box-shadow: 0 5px 5px 0 #afb8c9, 0 0 5px 0 #afb8c8;
+    margin-left: 18px;
+}
+
+.btn-upload:focus {
+    outline: none !important;
+}
+
+.btn-upload:hover {
+    background-color: #2aa2a2;
+}
+
+.btn-upload:active {
+    box-shadow: 0 1px 1px 0 #afb8c9, 0 0 1px 0 #afb8c8;
 }

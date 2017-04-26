@@ -21,6 +21,6 @@
 
 (defn ^:export init []
   (dev-setup)
-  ;;(re-frame/dispatch-sync [:initialize-db])
- ;; (re-frame/dispatch [:get-config])
+  (re-frame/dispatch-sync [:initialize-db])
+  ;; (re-frame/dispatch [:get-config])
   (mount-root))
