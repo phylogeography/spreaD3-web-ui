@@ -140,3 +140,18 @@ html, body {
 .btn-upload:active {
     box-shadow: 0 1px 1px 0 #afb8c9, 0 0 1px 0 #afb8c8;
 }
+
+input[type="file"] {
+    display: none;
+}
+
+.none {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
