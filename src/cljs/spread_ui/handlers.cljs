@@ -6,4 +6,14 @@
             [spread-ui.db :as db])
   (:import [goog.net XhrIo]))
 
- 
+(re-frame/reg-event-db
+ :initialize-db
+ (fn [_ _]
+   db/default-db))
+
+(re-frame/reg-event-db
+ :set-analysis-type
+ (fn [db [_ params]]
+   (assoc db :analysis-type (:value params))))
+
+
