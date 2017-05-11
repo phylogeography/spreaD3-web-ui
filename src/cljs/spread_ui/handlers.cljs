@@ -19,30 +19,17 @@
 (re-frame/reg-event-db
  :post-continuous-tree
  (fn [db [_ params]]
-   (let [content (:content params)
+   (let [file (:file params)
          form-data (doto
                        (js/FormData.)
-                     (.append "treefile" content)
-                     )]
-
-     #_(-> form-data js->clj prn)
-
-     #_(ajax/ajax-request
-        {:uri (str "http://localhost:4000" "/continuous/tree")
-         :method :post
-         :params {:treefile content}
-         ;;:headers {"content-Type" "multipart/form-data"}
-         ;; :content-type "multipart/form-data"
-         :handler #(println %1)
-         :format (ajax/text-request-format)
-         :response-format (ajax/json-response-format {:keywords? true})})
+                     (.append "treefile" file))]
      
-     #_(ajax/POST
-        (str "http://localhost:4000" "/continuous/tree")
-        {:multipart-params {:treefile content}
-         :format (ajax/text-request-format)
-         :handler #(println %1)
-         :error-handler #(println %)})
+     (ajax/POST
+      (str "http://localhost:4000" "/continuous/tree")
+      {:body form-data
+       :response-format (ajax/raw-response-format)
+       :handler #(println %1)
+       :error-handler #(println %)})
      
      )
    db))

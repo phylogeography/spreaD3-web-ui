@@ -6,16 +6,20 @@
 
 (defn handle-file-reads
   [evt]
-  (let [content (-> evt .-target .-result)]
-    (re-frame/dispatch [:post-continuous-tree {:content content}])))
+  (let [file (-> evt .-target .-result)]
+    (re-frame/dispatch [:post-continuous-tree {:file file}])))
 
 (defn handle-tree-upload [evt]
   (let [target (.-currentTarget evt)
         file (-> target .-files (aget 0))
         reader (js/FileReader.)]
+
+    (re-frame/dispatch [:post-continuous-tree {:file file
+                                               :name (.-name file)}])
+    
     (set! (.-value target) "")
-    (set! (.-onload reader) #(handle-file-reads %))
-    (.readAsText reader file)))
+    #_(set! (.-onload reader) #(handle-file-reads %))
+    #_(.readAsText reader file)))
 
 (defn tree-button []
   (fn []
