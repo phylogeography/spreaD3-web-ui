@@ -10,7 +10,7 @@
              :key id}
        (cond
          (= analysis-type "MCC tree with CONTINUOUS traits")
-         [continuous-analysis-component]
+         [continuous-analysis-component :continuous]
          (= analysis-type "MCC tree with DISCRETE traits")
          [:p "DISCRETE"]
          :else nil)])))

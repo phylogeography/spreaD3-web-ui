@@ -4,6 +4,8 @@
   {:config {:host nil
             :port nil}
    :analysis-type "MCC tree with CONTINUOUS traits"    
-   :continuous {}
+   :continuous {:attributes nil
+                :y-coordinate nil
+                :x-coordinate nil}
    
    })

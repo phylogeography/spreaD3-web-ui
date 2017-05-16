@@ -5,3 +5,8 @@
  :analysis-type
  (fn [db [_ params]]
    (get db :analysis-type)))
+
+(re-frame/reg-sub
+ :attributes
+ (fn [db [_ params]]
+   (get-in db [(:type params) :attributes])))

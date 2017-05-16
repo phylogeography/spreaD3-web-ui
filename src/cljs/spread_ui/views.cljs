@@ -16,6 +16,5 @@
          [:p {:class "label"} "Select analysis type:"]]
         [:div {:class "rowDisplay"} [(chooser analysis-chooser)]]
         [:div {:class "rowDisplay"} [:hr {:class "hline"}]]
-        [:div {:class "rowDisplay"} [(holder analysis-chooser)]]
-        ]
+        [:div {:class "rowDisplay"} [(holder analysis-holder)]]]
        [:div {:class "footer"} "footer"]])))
