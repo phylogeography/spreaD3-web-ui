@@ -6,10 +6,9 @@
   (let [selection (-> evt .-target .-value)]
     (re-frame/dispatch [:set-analysis-type {:value selection}])))
 
-(defn chooser [id]
+(defn chooser []
   (fn []    
     [:div {:class "chooser"}
-     [:select {:key id
-               :on-change #(handle-selection-change %)}
+     [:select {:on-change #(handle-selection-change %)}
       [:option {:value "MCC tree with CONTINUOUS traits"} "MCC tree with CONTINUOUS traits"]
       [:option {:value "MCC tree with DISCRETE traits"} "MCC tree with DISCRETE traits"]]]))

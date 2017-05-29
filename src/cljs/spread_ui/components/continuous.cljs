@@ -1,13 +1,6 @@
 (ns spread-ui.components.continuous
   (:require [re-frame.core :as re-frame]
-            [reagent.core :as reagent]
-            #_[cljs.core.async :refer [put! chan <! >!]])
-  #_(:require-macros [cljs.core.async.macros :refer [go go-loop]]))
-
-#_(defn handle-file-reads
-    [evt]
-    (let [file (-> evt .-target .-result)]
-      (re-frame/dispatch [:post-continuous-tree {:file file}])))
+            [reagent.core :as reagent]))
 
 (defn handle-tree-upload [evt]
   (let [target (.-currentTarget evt)
@@ -26,10 +19,13 @@
              :type "file"
              :on-change #(handle-tree-upload %)}]))
 
-;; TODO: dispatch :set-coordinate
-(defn chooser [id values]
-  [:select {:key id
-            :on-change #(prn %)}
+(defn handle-coordinate-change [analysis-id coordinate-id evt]
+  (re-frame/dispatch [:set-attribute {:type analysis-id
+                                      :attribute coordinate-id
+                                      :value (-> evt .-target .-value)}]))
+
+(defn coordinates-chooser [analysis-id coordinate-id values]
+  [:select {:on-change #(handle-coordinate-change analysis-id coordinate-id %)}
    (map 
     (fn [value]
       [:option {:key value :value value} value])
@@ -38,14 +34,23 @@
 ;; TODO: labels, styling
 (defn continuous-analysis-component [id]
   (fn []    
-    (let [attributes @(re-frame/subscribe [:attributes {:type id}])]
+    (let [y-coordinate-id :y-coordinate
+          x-coordinate-id :x-coordinate
+          attributes @(re-frame/subscribe [:attribute {:type id
+                                                       :attribute :attributes}])
+          y-coordinate @(re-frame/subscribe [:attribute {:type id
+                                                         :attribute y-coordinate-id}])
+          x-coordinate @(re-frame/subscribe [:attribute {:type id
+                                                         :attribute x-coordinate-id}])]
       [:div
        [tree-button]
        (if attributes
          [:div
-          [chooser :y-coordinate attributes]
-          [chooser :x-coordinate attributes]]
+          [coordinates-chooser id y-coordinate-id attributes]
+          [coordinates-chooser id x-coordinate-id attributes]])
+       ;; TODO if both coords set display rest
+       (if (and y-coordinate x-coordinate)
 
-         )
+         [:p "DISPLAY REST"]
 
-       ])))
+         )])))

@@ -17,17 +17,18 @@
    (assoc db :analysis-type (:value params))))
 
 (re-frame/reg-event-db
- :set-attributes
+ :set-attribute
  (fn [db [_ params]]
-   (assoc-in db [(:type params) :attributes] (:value params))))
+   (assoc-in db [(:type params) (:attribute params)] (:value params))))
 
 (defn get-attributes
   []
   (ajax/GET
-   (str "http://localhost:4000" "/continuous/attributes")
+   (str @db/backend-uri "/continuous/attributes")
    {:response-format (ajax/json-response-format)
-    :handler #(re-frame/dispatch [:set-attributes {:type :continuous
-                                                   :value (js->clj %)}])
+    :handler #(re-frame/dispatch [:set-attribute {:type :continuous
+                                                  :attribute :attributes
+                                                  :value (js->clj %)}])
     :error-handler #(println %)}))
 
 (re-frame/reg-event-db
@@ -38,7 +39,7 @@
                        (js/FormData.)
                      (.append "treefile" file))]
      (ajax/POST
-      (str "http://localhost:4000" "/continuous/tree")
+      (str @db/backend-uri "/continuous/tree")
       {:body form-data
        :response-format (ajax/raw-response-format)
        :handler get-attributes

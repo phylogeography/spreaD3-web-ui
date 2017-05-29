@@ -2,6 +2,7 @@
   (:require [reagent.core :as reagent]
             [re-frame.core :as re-frame]
             [re-frisk.core :refer [enable-re-frisk!]]
+            [spread-ui.db :as db]
             [spread-ui.handlers]
             [spread-ui.subscriptions]
             [spread-ui.views :as views]))
@@ -11,6 +12,7 @@
 
 (defn dev-setup []
   (when debug?
+    (reset! db/backend-uri "http://localhost:4000")
     (enable-console-print!)
     (enable-re-frisk!)
     (println "Starting in dev mode")))

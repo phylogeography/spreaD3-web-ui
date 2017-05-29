@@ -10,7 +10,6 @@
                  [ring-cors "0.1.9"]
                  [compojure "1.5.2"]
                  [clj-json "0.5.3"]
-                 [environ "1.1.0"]
                  ;; cljs
                  [org.clojure/clojurescript "1.9.495"]
                  [reagent "0.6.1"]
@@ -36,9 +35,7 @@
                                   [com.billpiel/sayid "0.0.14"]]
                    :plugins [[lein-kibit "0.0.8"]
                              [cider/cider-nrepl "0.14.0"]
-                             [com.billpiel/sayid "0.0.14"]]
-                   :env {:clj-env :dev
-                         :server-config {:host "localhost" :port 8080}}}
+                             [com.billpiel/sayid "0.0.14"]]}
              :uberjar {:main spread-ui.system
                        :source-paths ["src/clj"]
                        :aot :all

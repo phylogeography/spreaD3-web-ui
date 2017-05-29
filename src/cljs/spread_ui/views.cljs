@@ -6,15 +6,13 @@
             [spread-ui.components.holder :refer [holder]]))
 
 (defn main-panel []
-  (let [analysis-chooser :analysis-chooser
-        analysis-holder :analysis-holder]
-    (fn []
-      [:div {:class "container"}
-       [:div {:class "header"} "SpreaD3"]
-       [:div {:class "innerContainer"}
-        [:div {:class "rowDisplay margin-top"}
-         [:p {:class "label"} "Select analysis type:"]]
-        [:div {:class "rowDisplay"} [(chooser analysis-chooser)]]
-        [:div {:class "rowDisplay"} [:hr {:class "hline"}]]
-        [:div {:class "rowDisplay"} [(holder analysis-holder)]]]
-       [:div {:class "footer"} "footer"]])))
+  (fn []
+    [:div {:class "container"}
+     [:div {:class "header"} "SpreaD3"]
+     [:div {:class "innerContainer"}
+      [:div {:class "rowDisplay margin-top"}
+       [:p {:class "label"} "Select analysis type:"]]
+      [:div {:class "rowDisplay"} [chooser]]
+      [:div {:class "rowDisplay"} [:hr {:class "hline"}]]
+      [:div {:class "rowDisplay"} [holder]]]
+     [:div {:class "footer"} "footer"]]))

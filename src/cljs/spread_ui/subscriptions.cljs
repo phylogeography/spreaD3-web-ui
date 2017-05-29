@@ -7,6 +7,6 @@
    (get db :analysis-type)))
 
 (re-frame/reg-sub
- :attributes
+ :attribute
  (fn [db [_ params]]
-   (get-in db [(:type params) :attributes])))
+   (get-in db [(:type params) (:attribute params)])))
