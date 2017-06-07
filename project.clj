@@ -3,6 +3,8 @@
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/tools.logging "0.3.1"]
                  [org.clojure/data.codec "0.1.0"]
+                 [com.stuartsierra/component "0.3.2"]
+                 [yogthos/config "0.8"]
                  [ring "1.5.1"]
                  [ring/ring-core "1.5.1"]
                  [ring/ring-jetty-adapter "1.5.1"]
@@ -25,6 +27,7 @@
   :source-paths ["src/clj"] 
   :resource-paths ["resources"]
   :profiles {:dev {:source-paths ["dev"]
+                   :resource-paths ["config/dev"]
                    :dependencies [[org.clojure/tools.namespace "0.2.4"]
                                   [org.clojure/tools.nrepl "0.2.12"]
                                   [com.cemerick/pomegranate "0.2.0"]
@@ -40,13 +43,10 @@
                        :source-paths ["src/clj"]
                        :aot :all
                        :auto-clean false
-                       :uberjar-name "spread-ui.jar"
-                       :env {:clj-env :production}}
-             :test {:source-paths ["src/clj" "test/clj"]
-                    :dependencies [[ring/ring-mock "0.3.0"]]
-                    :resource-paths ["test/resources"]
-                    :env {:clj-env :test
-                          :server-config {:host "localhost" :port 8080}}}}
+                       :uberjar-name "spread-ui.jar"}
+             :test {:source-paths ["test"]
+                    :resource-paths ["config/test" "test/resources"]    
+                    :dependencies [[ring/ring-mock "0.3.0"]]}}
   ;; cljs
   :plugins [[lein-cljsbuild "1.1.5"]
             [lein-figwheel "0.5.9" :exclusions [cider/cider-nrepl]]

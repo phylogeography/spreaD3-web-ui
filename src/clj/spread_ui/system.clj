@@ -1,41 +1,41 @@
 (ns spread-ui.system
   (:gen-class)
-  (:require [spread-ui.server :as server]
+  (:require [com.stuartsierra.component :as component]
+            [config.core :as config]
+            [spread-ui.server :as server]
             [clojure.string :as string]
-            [clojure.tools.logging :as logging]
-            [environ.core :refer [env]]))
+            [clojure.tools.logging :as logging]))
+
+(defn system-map []
+  (component/system-map :server (server/new-server (get config/env :server-config))))
+
+(def dependency-map
+  ;; List systems inter-dependencies in either:
+  ;;    {:key [:dependency1 :dependency2]} form
+  ;; or
+  ;;    {:key {:name-arg1 :dependency1
+  ;;           :name-arg2 :dependency2}} form
+  {})
 
 (defn create-system
-  "Returns a new instance of the whole application. No side effects."
   []
-  (logging/info "Initializing spread-ui...")
-  {:handlers (server/create-app)
-   :server-config (get env :server-config)})
-
-(defn start-server [system]
-  (server/create-and-start (:handlers system)
-                           (:server-config system)))
+  (component/system-using (system-map)
+                          dependency-map))
 
 (defn start
   "Performs side effects to initialize the system, acquire resources,
   and start it running. Returns an updated instance of the system."
   [system]
-  (logging/info "Starting spread-ui...")
-  (into system {:server-connection (start-server system)}))
-
-(defn stop-server [system]
-  (when (:server-connection system)
-    (server/stop (:server-connection system)))
-  (dissoc system :server-connection))
+  (logging/info "Starting system")
+  (component/start system))
 
 (defn stop
   "Performs side effects to shut down the system and release its
   resources. Returns an updated instance of the system."
   [system]
-  (logging/info "Stopping spread-ui...")
-  (-> system (stop-server)))
+  (logging/info "Stopping system")
+  (component/stop system))
 
 (defn -main [& args]
   (let [system (create-system)]
-    (start system)
-    (logging/info "Systems functional")))
+    (start system)))

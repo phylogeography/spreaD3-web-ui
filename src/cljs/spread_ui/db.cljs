@@ -9,5 +9,9 @@
   {:analysis-type "MCC tree with CONTINUOUS traits"    
    :continuous {:attributes nil
                 :y-coordinate nil
-                :x-coordinate nil}
+                :x-coordinate nil
+                :external-annotations nil
+                :hpd-level nil
+                :mrsd nil
+                :timescale-multiplier nil}
    :discrete {}})

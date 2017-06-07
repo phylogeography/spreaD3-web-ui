@@ -1,22 +1,16 @@
 (ns spread-ui.server
-  (:require [clj-json.core :as json]
+  (:require [com.stuartsierra.component :as component]
+            [config.core :as config]
+            [clj-json.core :as json]
             [ring.adapter.jetty :as jetty]
-            [ring.middleware.format :refer [wrap-restful-format]]
+            [ring.middleware.format :as middleware-format]
             [ring.middleware.cors :as cors]
             [compojure.route :as route]
-            [compojure.core :refer [GET POST routes defroutes context]]
+            [compojure.core :as compojure :refer [GET POST defroutes]]
             [ring.util.response :as response]
-            [clojure.repl :refer [pst]]
-            [environ.core :refer [env]]
             [clojure.tools.logging :as logging]))
- 
-(def http-internal-server-error 500)
-(def internal-server-error "Internal Server Error")
 
-(defn make-response
-  [http-status body]
-  (-> (response/response body)
-      (response/status http-status)))
+;; macros
 
 (defmacro with-err-str
   "Evaluates exprs in a context in which *err* is bound to a fresh
@@ -28,11 +22,21 @@
        ~@body
        (str s#))))
 
+;; global variables
+
+(def http-internal-server-error 500)
+(def internal-server-error "Internal Server Error")
+
+(defn make-response
+  [http-status body]
+  (-> (response/response body)
+      (response/status http-status)))
+
 (defn wrap-exception [handler]
   (fn [request]
     (try (handler request)
          (catch Exception e
-           (let [stack-trace (with-err-str (pst e 36))]
+           (let [stack-trace (with-err-str (.printStackTrace e))]
              (logging/error stack-trace)
              (make-response http-internal-server-error internal-server-error))))))
 
@@ -48,7 +52,7 @@
   (response/resource-response "favicon.ico" {:root "public"}))
 
 (defn serve-config [_]    
-  (json/generate-string (get env :server-config)))
+  (json/generate-string (get config/env :server-config)))
 
 (defroutes all-routes
   (GET "/" [] serve-index)
@@ -57,20 +61,26 @@
   (route/resources "/")
   (route/not-found "Page not found"))
 
-(def app-handlers
+(def handlers
   (-> all-routes      
       wrap-exception
       (cors/wrap-cors :access-control-allow-origin [#".*"]
                       :access-control-allow-methods [:post :get])))
 
-(defn create-app []
-  app-handlers)
+#_(defn create-app []
+    handlers)
 
-(defn create-and-start
-  [handlers server-config]
-  (let [port (:port server-config) host (:host server-config)]
-    (jetty/run-jetty handlers {:port port :join? false :host host})))
+(defrecord Server [host port server]
+  component/Lifecycle
+  (start [this]
+    (logging/info "Starting Server")
+    (let [server (jetty/run-jetty handlers {:host host :port port :join? false})]
+      (assoc this :server server)))
+  (stop [this]
+    (logging/info "Stopping Server")
+    (.stop server)
+    (assoc this :server nil)))
 
-(defn stop
-  [server-connection]
-  (.stop server-connection))
+(defn new-server
+  [{:keys [host port]}]
+  (map->Server {:host host :port port}))

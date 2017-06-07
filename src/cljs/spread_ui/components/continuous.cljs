@@ -2,6 +2,8 @@
   (:require [re-frame.core :as re-frame]
             [reagent.core :as reagent]))
 
+;; handlers
+
 (defn handle-tree-upload [evt]
   (let [target (.-currentTarget evt)
         js-file (-> target .-files (aget 0))]
@@ -9,6 +11,23 @@
       (re-frame/dispatch [:post-continuous-tree {:file js-file
                                                  :name (.-name js-file)}])
       (set! (.-value target) ""))))
+
+
+(defn handle-coordinate-change [analysis-id coordinate-id evt]
+  (re-frame/dispatch [:set-attribute {:type analysis-id
+                                      :attribute coordinate-id
+                                      :value (-> evt .-target .-value)}]))
+
+
+(defn toggle-external-annotations [analysis-id evt]
+  (let [attribute-id :external-annotations
+        current-value  @(re-frame/subscribe [:attribute {:type analysis-id
+                                                         :attribute attribute-id}])]
+    (re-frame/dispatch [:set-attribute {:type analysis-id
+                                        :attribute attribute-id
+                                        :value (not current-value)}])))
+
+;; views
 
 (defn tree-button []
   (fn []
@@ -19,10 +38,7 @@
              :type "file"
              :on-change #(handle-tree-upload %)}]))
 
-(defn handle-coordinate-change [analysis-id coordinate-id evt]
-  (re-frame/dispatch [:set-attribute {:type analysis-id
-                                      :attribute coordinate-id
-                                      :value (-> evt .-target .-value)}]))
+
 
 (defn coordinates-chooser [analysis-id coordinate-id values]
   [:select {:on-change #(handle-coordinate-change analysis-id coordinate-id %)}
@@ -30,6 +46,11 @@
     (fn [value]
       [:option {:key value :value value} value])
     values)])
+
+
+(defn external-annotations-checkbox [analysis-id]
+  [:input {:type "checkbox"
+           :on-change #(toggle-external-annotations analysis-id %)}])
 
 ;; TODO: labels, styling
 (defn continuous-analysis-component [id]
@@ -51,6 +72,6 @@
        ;; TODO if both coords set display rest
        (if (and y-coordinate x-coordinate)
 
-         [:p "DISPLAY REST"]
-
+         [external-annotations-checkbox id]
+         
          )])))
